@@ -1,46 +1,58 @@
 package com.example.weatherapp;
 
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class GoogleAPIWrapper {
+    private static final GoogleAPIWrapper GOOGLE_API_WRAPPER = new GoogleAPIWrapper();
     String APIKey, URLbase;
 
-    public GoogleAPIWrapper() {
+    private GoogleAPIWrapper() {
         this.APIKey = MainActivity.resources.getString(R.string.google_API_key);
         this.URLbase = MainActivity.resources.getString(R.string.geo_request);
     }
 
-    public ArrayList<String> coordRequest(String address) {
-        HTTPRequest request = new HTTPRequest();
-        String encodedAddress = "address=" + request.encodeString(address);
+    protected static GoogleAPIWrapper getInstance(){
+        return GOOGLE_API_WRAPPER;
+    }
 
-        String URL = buildURL(encodedAddress);
+    protected void coordRequest(String address) {
+        String URL = buildURL(address);
+        new HTTPRequest().execute(URL);
 
+    }
+    protected static ArrayList<String> parseCoords(JSONObject object){
+        JSONObject location = null;
+        ArrayList<String> coords = new ArrayList<String>();
         try {
-            JSONObject object = request.execute(URL).get();
-
-            JSONArray location = object.getJSONArray("results")
+            location = object.getJSONArray("results")
                     .getJSONObject(0)
                     .getJSONObject("geometry")
-                    .getJSONArray("location");
-
-            ArrayList<String> coords = new ArrayList<String>();
-
-            coords.add(location.getJSONObject(0).toString());
-            coords.add(location.getJSONObject(1).toString());
-
-            return coords;
-        } catch (Exception e) {
-            System.out.println("Error in Google API call: " + e.getStackTrace().toString());
+                    .getJSONObject("location");
+            coords.add(location.get("lat").toString());
+            coords.add(location.get("lng").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return null;
+        return coords;
     }
 
     private String buildURL(String param) {
+        param = "address=" + encodeString(param);
         return URLbase + param + "&key=" + APIKey;
+    }
+
+    private static String encodeString(String text){
+        String encodedText = text;
+        try {
+            encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodedText;
     }
 }

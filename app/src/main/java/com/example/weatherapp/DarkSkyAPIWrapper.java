@@ -1,33 +1,25 @@
 package com.example.weatherapp;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class DarkSkyAPIWrapper {
     private String APIKey, baseURL;
+    private static final DarkSkyAPIWrapper DARK_SKY_API_WRAPPER = new DarkSkyAPIWrapper();
 
-    public DarkSkyAPIWrapper() {
+    private DarkSkyAPIWrapper() {
         this.APIKey = MainActivity.resources.getString(R.string.darkSky_API_key);
         this.baseURL = MainActivity.resources.getString(R.string.darkSky_request);
     }
 
-    public JSONObject getCurrentWeather(ArrayList<String> coords) {
+    protected static DarkSkyAPIWrapper getInstance(){
+        return DARK_SKY_API_WRAPPER;
+    }
+
+    protected void getCurrentWeather(ArrayList<String> coords) {
         float lat = Float.parseFloat(coords.get(0));
-        float log = Float.parseFloat(coords.get(1)); //i know it's longitude
+        float lng = Float.parseFloat(coords.get(1)); //i know it's longitude
 
-        HTTPRequest request = new HTTPRequest();
-
-        String URL = baseURL + APIKey + lat + "," + log;
-
-        try {
-            JSONObject object = request.execute(URL).get();
-
-            return object.getJSONObject("currently");
-        } catch (Exception e) {
-            System.out.println("Error in DarkSky API call: " + e.getStackTrace().toString());
-        }
-        return null;
+        String URL = baseURL + APIKey + "/" + lat + "," + lng;
+        new HTTPRequest().execute(URL);
     }
 }

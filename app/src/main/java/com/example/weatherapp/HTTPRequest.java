@@ -1,30 +1,24 @@
 package com.example.weatherapp;
 
 import android.os.AsyncTask;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
-public class HTTPRequest extends AsyncTask<String, Void, JSONObject> {
+public class HTTPRequest extends AsyncTask<String, Void, String> {
     @Override
-    protected JSONObject doInBackground(String... strings) {
-        String urlString = encodeString(strings[0]);
+    protected String doInBackground(String... strings) {
         String response = "";
+        HttpURLConnection connection = null;
         try{
-            URL url = new URL(urlString);
+            URL url = new URL(strings[0]);
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             connection.connect();
@@ -34,25 +28,30 @@ public class HTTPRequest extends AsyncTask<String, Void, JSONObject> {
             while((line = rd.readLine()) != null){
                 response += line + "\n";
             }
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally{
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-        return parse(response);
+        return response;
     }
 
-//    @Override
-//    protected void onPostExecute(String response){
-//        JSONObject object = parse(response);
-//        if(object.has("results")){
-//
-//        }
-//    }
+    @Override
+    protected void onPostExecute(String response){
+       JSONObject object = parse(response);
+       if(object.has("results")){ //if JSON response is google geolocation
+          ArrayList<String> coords = GoogleAPIWrapper.parseCoords(object);
 
-    protected JSONObject parse(String response){
+          DarkSkyAPIWrapper.getInstance().getCurrentWeather(coords);
+      }
+      else if(object.has("currently")){ // if JSON response is darksky weather info
+          //create new activity w/ darksky info in it
+       }
+  }
+
+    private static JSONObject parse(String response){
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response);
@@ -60,17 +59,5 @@ public class HTTPRequest extends AsyncTask<String, Void, JSONObject> {
             System.out.println("Error: " + e.toString());
         }
         return jsonObject;
-    }
-
-    //helpers
-
-    public String encodeString(String text){
-        String encodedText = text;
-        try {
-            encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return encodedText;
     }
 }

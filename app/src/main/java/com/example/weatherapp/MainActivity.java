@@ -37,14 +37,8 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText locationText = findViewById(R.id.locationText);
         String address = locationText.getText().toString();
 
-        GoogleAPIWrapper gw = new GoogleAPIWrapper();
-        ArrayList<String> coords = gw.coordRequest(address);
+        GoogleAPIWrapper.getInstance().coordRequest(address);
 
-
-        DarkSkyAPIWrapper ds = new DarkSkyAPIWrapper();
-        JSONObject data = ds.getCurrentWeather(coords);
-
-        System.out.println(data.toString());
     }
 
 }
