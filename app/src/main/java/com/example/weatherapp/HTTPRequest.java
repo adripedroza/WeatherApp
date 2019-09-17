@@ -1,5 +1,7 @@
 package com.example.weatherapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class HTTPRequest extends AsyncTask<String, Void, String> {
+
+
     @Override
     protected String doInBackground(String... strings) {
         String response = "";
@@ -42,10 +46,15 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response){
        JSONObject object = parse(response);
        if(object.has("results")){ //if JSON response is google geolocation
-          GoogleAPIWrapper.parseCoords(object);
+          ArrayList<String> coords = GoogleAPIWrapper.parseCoords(object);
+          DarkSkyAPIWrapper.getInstance().getCurrentWeather(coords);
       }
       else if(object.has("currently")){ // if JSON response is darksky weather info
           DarkSkyAPIWrapper.getInstance().setValues(object);
+          Context context = MainActivity.getAppContext();
+          Intent intent = new Intent(context, MapDisplay1.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          context.startActivity(intent);
        }
   }
 

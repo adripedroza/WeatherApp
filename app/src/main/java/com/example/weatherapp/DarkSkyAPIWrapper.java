@@ -1,5 +1,7 @@
 package com.example.weatherapp;
 
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,18 +31,19 @@ public class DarkSkyAPIWrapper {
         new HTTPRequest().execute(URL);
     }
 
-    protected void setValues(JSONObject j) {
+    protected void setValues(JSONObject object) {
         try {
-            values.put("summary", j.getString("summary"));
-            values.put("temperature", j.getString("temperature"));
-            values.put("apparentTemp", j.getString("apparentTemperature"));
-            values.put("humidity", j.getString("humidity"));
+            JSONObject currently = object.getJSONObject("currently");
+            values.put("Wind Speed", currently.get("windSpeed").toString());
+            values.put("Temperature", currently.get("temperature").toString());
+            values.put("Precipitation", currently.get("precipProbability").toString());
+            values.put("Humidity", currently.get("humidity").toString());
         } catch (JSONException e) {
             System.out.println("Error: " + e.toString());
         }
     }
 
-    protected Map<String, Object> getValues() {
+    protected static Map<String, Object> getValues() {
         return values;
     }
 }

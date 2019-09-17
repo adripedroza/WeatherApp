@@ -3,6 +3,7 @@ package com.example.weatherapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -27,11 +28,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static Resources resources;
-
+    private static MainActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         resources = getResources();
         super.onCreate(savedInstanceState);
+        instance = this;
 
         setContentView(R.layout.activity_main);
     }
@@ -40,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         String address = locationText.getText().toString();
 
         GoogleAPIWrapper.getInstance().coordRequest(address);
+    }
+
+    protected static Context getAppContext(){
+         return  instance.getApplicationContext();
     }
 
 }

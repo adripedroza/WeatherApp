@@ -1,5 +1,7 @@
 package com.example.weatherapp;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
@@ -8,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class GoogleAPIWrapper {
-    private static JSONObject addressInfo = null;
+    private static LatLng loc;
     private static final GoogleAPIWrapper GOOGLE_API_WRAPPER = new GoogleAPIWrapper();
     private static ArrayList<String> coords = null;
     String APIKey, URLbase;
@@ -27,11 +29,11 @@ public class GoogleAPIWrapper {
         new HTTPRequest().execute(URL);
 
     }
-    protected static void parseCoords(JSONObject object){
+    protected static ArrayList<String> parseCoords(JSONObject object){
         JSONObject location = null;
         coords = new ArrayList<>();
         try {
-            addressInfo = object.getJSONObject("results");
+           // addressInfo = object.getJSONObject("results");
 
             location = object.getJSONArray("results")
                     .getJSONObject(0)
@@ -39,9 +41,13 @@ public class GoogleAPIWrapper {
                     .getJSONObject("location");
             coords.add(location.get("lat").toString());
             coords.add(location.get("lng").toString());
+            LatLng loc = new LatLng(Double.parseDouble(location.get("lat").toString()), Double.parseDouble(location.get("lng").toString()));
+            setLoc(loc);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return coords;
     }
 
     private String buildURL(String param) {
@@ -59,8 +65,11 @@ public class GoogleAPIWrapper {
         return encodedText;
     }
 
-    protected static JSONObject getAddressInfo() {
-        return addressInfo;
+    protected static LatLng getLoc() {
+        return loc;
+    }
+    protected static void setLoc(LatLng loc){
+        GoogleAPIWrapper.loc = loc;
     }
 
     protected static ArrayList<String> getCoords() {
