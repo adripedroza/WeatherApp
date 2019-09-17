@@ -2,6 +2,8 @@ package com.example.weatherapp;
 
 import android.content.Context;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,11 +25,9 @@ public class DarkSkyAPIWrapper {
         return DARK_SKY_API_WRAPPER;
     }
 
-    protected void getCurrentWeather(ArrayList<String> coords) {
-        float lat = Float.parseFloat(coords.get(0));
-        float lng = Float.parseFloat(coords.get(1));
+    protected void getCurrentWeather(LatLng coords) {
 
-        String URL = baseURL + APIKey + "/" + lat + "," + lng;
+        String URL = baseURL + APIKey + "/" + coords.latitude + "," + coords.longitude;
         new HTTPRequest().execute(URL);
     }
 

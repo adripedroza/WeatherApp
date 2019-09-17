@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -15,12 +14,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Map;
 
-public class MapDisplay1 extends AppCompatActivity implements OnMapReadyCallback {
+public class MapDisplayActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_display1);
+        setContentView(R.layout.activity_map_display);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
@@ -43,10 +42,10 @@ public class MapDisplay1 extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng loc = GoogleAPIWrapper.getLoc();
+        LatLng coords = GoogleAPIWrapper.getCoords();
         map.setMinZoomPreference(10);
-        map.addMarker(new MarkerOptions().position(loc).title("Marker"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        map.addMarker(new MarkerOptions().position(coords).title(GoogleAPIWrapper.getLocName()));
+        map.moveCamera(CameraUpdateFactory.newLatLng(coords));
 
     }
 }

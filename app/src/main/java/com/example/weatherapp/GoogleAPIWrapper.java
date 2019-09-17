@@ -10,9 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class GoogleAPIWrapper {
-    private static LatLng loc;
+    private static String locName;
+    private static LatLng coords;
     private static final GoogleAPIWrapper GOOGLE_API_WRAPPER = new GoogleAPIWrapper();
-    private static ArrayList<String> coords = null;
     String APIKey, URLbase;
 
     private GoogleAPIWrapper() {
@@ -29,20 +29,15 @@ public class GoogleAPIWrapper {
         new HTTPRequest().execute(URL);
 
     }
-    protected static ArrayList<String> parseCoords(JSONObject object){
-        JSONObject location = null;
-        coords = new ArrayList<>();
+    protected static LatLng parseCoords(JSONObject object){
+        JSONObject location;
         try {
-           // addressInfo = object.getJSONObject("results");
-
             location = object.getJSONArray("results")
                     .getJSONObject(0)
                     .getJSONObject("geometry")
                     .getJSONObject("location");
-            coords.add(location.get("lat").toString());
-            coords.add(location.get("lng").toString());
-            LatLng loc = new LatLng(Double.parseDouble(location.get("lat").toString()), Double.parseDouble(location.get("lng").toString()));
-            setLoc(loc);
+            coords = new LatLng(Double.parseDouble(location.get("lat").toString()), Double.parseDouble(location.get("lng").toString()));
+            locName = object.getJSONArray("results").getJSONObject(0).getString("formatted_address");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -65,14 +60,10 @@ public class GoogleAPIWrapper {
         return encodedText;
     }
 
-    protected static LatLng getLoc() {
-        return loc;
-    }
-    protected static void setLoc(LatLng loc){
-        GoogleAPIWrapper.loc = loc;
-    }
-
-    protected static ArrayList<String> getCoords() {
+    protected static LatLng getCoords() {
         return coords;
+    }
+    protected static String getLocName(){
+        return locName;
     }
 }
