@@ -54,7 +54,7 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
         try {
             jsonObject = new JSONObject(response);
         } catch (JSONException e) {
-            System.out.println("Error: " + e.toString());
+            System.out.println("HTTP Error: " + e.toString());
         }
         return jsonObject;
     }

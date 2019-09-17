@@ -38,7 +38,7 @@ public class GoogleAPIWrapper {
             coords.add(location.get("lat").toString());
             coords.add(location.get("lng").toString());
         } catch (JSONException e) {
-            e.printStackTrace();
+            System.out.println("Google Error: " + e.toString());
         }
     }
 
