@@ -32,10 +32,10 @@ public class DarkSkyAPIWrapper {
         try {
             values.put("summary", j.getString("summary"));
             values.put("temperature", j.getString("temperature"));
-            values.put("apparentTemperature", j.getString("apparentTemperature"));
+            values.put("apparentTemp", j.getString("apparentTemperature"));
             values.put("humidity", j.getString("humidity"));
         } catch (JSONException e) {
-            System.out.println("DarkSky parsing error: " + e.toString());
+            System.out.println("Error: " + e.toString());
         }
     }
 

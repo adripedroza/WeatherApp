@@ -41,12 +41,10 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String response){
        JSONObject object = parse(response);
-       if(object.has("results")){
-           //if JSON response is google geolocation
+       if(object.has("results")){ //if JSON response is google geolocation
           GoogleAPIWrapper.parseCoords(object);
       }
-      else if(object.has("currently")){
-          // if JSON response is darksky weather info
+      else if(object.has("currently")){ // if JSON response is darksky weather info
           DarkSkyAPIWrapper.getInstance().setValues(object);
        }
   }
@@ -56,7 +54,7 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
         try {
             jsonObject = new JSONObject(response);
         } catch (JSONException e) {
-            System.out.println("HTTP Error: " + e.toString());
+            System.out.println("Error: " + e.toString());
         }
         return jsonObject;
     }

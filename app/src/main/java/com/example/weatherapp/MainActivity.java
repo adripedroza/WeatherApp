@@ -40,5 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleAPIWrapper.getInstance().coordRequest(address);
     }
+
 }
 
