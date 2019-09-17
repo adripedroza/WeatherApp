@@ -24,8 +24,8 @@ public class GoogleAPIWrapper {
     protected void coordRequest(String address) {
         String URL = buildURL(address);
         new HTTPRequest().execute(URL);
-
     }
+
     protected static void parseCoords(JSONObject object){
         JSONObject location = null;
         ArrayList<String> coords = new ArrayList<String>();

@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         String address = locationText.getText().toString();
 
         GoogleAPIWrapper.getInstance().coordRequest(address);
-        //this call updates instance variables and triggers darkSky updates as well
     }
 }
 
