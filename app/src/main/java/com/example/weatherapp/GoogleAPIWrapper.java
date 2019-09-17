@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class GoogleAPIWrapper {
+    private static JSONObject addressInfo = null;
     private static final GoogleAPIWrapper GOOGLE_API_WRAPPER = new GoogleAPIWrapper();
     String APIKey, URLbase;
 
@@ -25,10 +26,12 @@ public class GoogleAPIWrapper {
         new HTTPRequest().execute(URL);
 
     }
-    protected static ArrayList<String> parseCoords(JSONObject object){
+    protected static void parseCoords(JSONObject object){
         JSONObject location = null;
         ArrayList<String> coords = new ArrayList<String>();
         try {
+            addressInfo = object.getJSONObject("results");
+            
             location = object.getJSONArray("results")
                     .getJSONObject(0)
                     .getJSONObject("geometry")
@@ -38,7 +41,6 @@ public class GoogleAPIWrapper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return coords;
     }
 
     private String buildURL(String param) {

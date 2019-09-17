@@ -42,12 +42,10 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response){
        JSONObject object = parse(response);
        if(object.has("results")){ //if JSON response is google geolocation
-          ArrayList<String> coords = GoogleAPIWrapper.parseCoords(object);
-
-          DarkSkyAPIWrapper.getInstance().getCurrentWeather(coords);
+          GoogleAPIWrapper.parseCoords(object);
       }
       else if(object.has("currently")){ // if JSON response is darksky weather info
-          //create new activity w/ darksky info in it
+          DarkSkyAPIWrapper.getInstance().setValues(object);
        }
   }
 

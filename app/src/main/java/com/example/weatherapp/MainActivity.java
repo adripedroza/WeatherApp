@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         String address = locationText.getText().toString();
 
         GoogleAPIWrapper.getInstance().coordRequest(address);
-
     }
 
 }

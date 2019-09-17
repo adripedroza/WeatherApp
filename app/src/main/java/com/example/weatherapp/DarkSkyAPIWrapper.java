@@ -1,8 +1,14 @@
 package com.example.weatherapp;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DarkSkyAPIWrapper {
+    private static Map<String, Object> values = new HashMap<String, Object>();
     private String APIKey, baseURL;
     private static final DarkSkyAPIWrapper DARK_SKY_API_WRAPPER = new DarkSkyAPIWrapper();
 
@@ -21,5 +27,20 @@ public class DarkSkyAPIWrapper {
 
         String URL = baseURL + APIKey + "/" + lat + "," + lng;
         new HTTPRequest().execute(URL);
+    }
+
+    protected void setValues(JSONObject j) {
+        try {
+            values.put("summary", j.getString("summary"));
+            values.put("temperature", j.getString("temperature"));
+            values.put("apparentTemp", j.getString("apparentTemperature"));
+            values.put("humidity", j.getString("humidity"));
+        } catch (JSONException e) {
+            System.out.println("Error: " + e.toString());
+        }
+    }
+
+    protected Map<String, Object> getValues() {
+        return values;
     }
 }
