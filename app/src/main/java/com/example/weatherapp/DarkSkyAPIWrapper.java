@@ -23,7 +23,7 @@ public class DarkSkyAPIWrapper {
 
     protected void getCurrentWeather(ArrayList<String> coords) {
         float lat = Float.parseFloat(coords.get(0));
-        float lng = Float.parseFloat(coords.get(1)); //i know it's longitude
+        float lng = Float.parseFloat(coords.get(1));
 
         String URL = baseURL + APIKey + "/" + lat + "," + lng;
         new HTTPRequest().execute(URL);

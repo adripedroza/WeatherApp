@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class GoogleAPIWrapper {
     private static JSONObject addressInfo = null;
     private static final GoogleAPIWrapper GOOGLE_API_WRAPPER = new GoogleAPIWrapper();
+    private static ArrayList<String> coords = null;
     String APIKey, URLbase;
 
     private GoogleAPIWrapper() {
@@ -28,10 +29,10 @@ public class GoogleAPIWrapper {
     }
     protected static void parseCoords(JSONObject object){
         JSONObject location = null;
-        ArrayList<String> coords = new ArrayList<String>();
+        coords = new ArrayList<>();
         try {
             addressInfo = object.getJSONObject("results");
-            
+
             location = object.getJSONArray("results")
                     .getJSONObject(0)
                     .getJSONObject("geometry")
@@ -56,5 +57,9 @@ public class GoogleAPIWrapper {
             e.printStackTrace();
         }
         return encodedText;
+    }
+
+    protected static JSONObject getAddressInfo() {
+        return addressInfo;
     }
 }
