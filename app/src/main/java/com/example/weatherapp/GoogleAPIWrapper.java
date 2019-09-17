@@ -62,4 +62,8 @@ public class GoogleAPIWrapper {
     protected static JSONObject getAddressInfo() {
         return addressInfo;
     }
+
+    protected static ArrayList<String> getCoords() {
+        return coords;
+    }
 }

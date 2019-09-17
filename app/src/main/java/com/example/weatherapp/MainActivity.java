@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         resources = getResources();
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
     }
     public void submitLocation(View view){

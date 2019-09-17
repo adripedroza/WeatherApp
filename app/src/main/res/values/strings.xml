@@ -5,4 +5,5 @@
     <string name="text_input">locationText</string>
     <string name="darkSky_API_key">5d749646a2d0b4f7ca18d01f733168c8</string>
     <string name="darkSky_request">https://api.darksky.net/forecast/</string>
+    <string name="title_activity_map_display">MapDisplay</string>
 </resources>
