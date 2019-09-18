@@ -7,28 +7,39 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="328dp">
+        android:layout_marginTop="400dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="155dp">
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:onClick="submitLocation"
         android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Submit"
+        android:onClick="submitLocation"
+        android:text="@string/button_submit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locationText"
-        tools:layout_editor_absoluteX="152dp" />
+        app:layout_constraintVertical_bias="0.081" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/locationText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Location"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="150dp" />
+        android:layout_width="314dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="100dp"
+        android:hint="@string/location_prompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

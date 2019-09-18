@@ -34,10 +34,14 @@ public class DarkSkyAPIWrapper {
     protected void setValues(JSONObject object) {
         try {
             JSONObject currently = object.getJSONObject("currently");
+            Double precipProbability = Double.parseDouble(currently.get("precipProbability").toString());
+            precipProbability *= 100;
+            Double humidity = Double.parseDouble(currently.get("humidity").toString());
+            humidity *=100;
             values.put("Wind Speed", currently.get("windSpeed").toString());
             values.put("Temperature", currently.get("temperature").toString());
-            values.put("Precipitation", currently.get("precipProbability").toString());
-            values.put("Humidity", currently.get("humidity").toString());
+            values.put("Precipitation", precipProbability);
+            values.put("Humidity", humidity);
         } catch (JSONException e) {
             System.out.println("Error: " + e.toString());
         }

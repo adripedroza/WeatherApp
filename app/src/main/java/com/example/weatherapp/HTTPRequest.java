@@ -3,6 +3,8 @@ package com.example.weatherapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -49,7 +51,12 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
        JSONObject object = parse(response);
        if(object.has("results")){ //if JSON response is google geolocation
           LatLng coords = GoogleAPIWrapper.parseCoords(object);
-          DarkSkyAPIWrapper.getInstance().getCurrentWeather(coords);
+          if(coords != null) {
+              DarkSkyAPIWrapper.getInstance().getCurrentWeather(coords);
+          }
+          else{
+              errorToast();
+          }
       }
       else if(object.has("currently")){ // if JSON response is darksky weather info
           DarkSkyAPIWrapper.getInstance().setValues(object);
@@ -69,4 +76,10 @@ public class HTTPRequest extends AsyncTask<String, Void, String> {
         }
         return jsonObject;
     }
+
+    private void errorToast(){
+        Toast toast = Toast.makeText(MainActivity.getAppContext(), "Invalid Address : Unable to resolve coordinates", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
 }

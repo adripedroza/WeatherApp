@@ -40,7 +40,7 @@ public class GoogleAPIWrapper {
             locName = object.getJSONArray("results").getJSONObject(0).getString("formatted_address");
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            coords = null;
         }
         return coords;
     }
